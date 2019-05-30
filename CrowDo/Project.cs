@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 
 namespace CrowDo
-{
+{//ko
     public class Project
     {
         public int ProjectId { get; set; }
