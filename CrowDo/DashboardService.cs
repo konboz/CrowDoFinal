@@ -64,9 +64,10 @@ namespace CrowDo
                 .SingleOrDefault(u => u.UserId == userId);
 
             var project = context.Set<Project>()
-            .SingleOrDefault(c => c.ProjectId == projectId);
+                .Include(p => p.RewardPackages)
+                .SingleOrDefault(c => c.ProjectId == projectId);
 
-            if (user.CreatedProjects.Contains(project))
+            if (!user.CreatedProjects.Contains(project))
             {
                 result.ErrorCode = 15;
                 result.ErrorText = "You don't have creator rights for this project";
@@ -109,12 +110,9 @@ namespace CrowDo
                 return result;
             }
 
-            context.Add(rewardPackage);
 
-            project.RewardPackages = new List<RewardPackage>
-            {
-                rewardPackage
-            };
+            project.RewardPackages.Add(rewardPackage);
+           
 
             if (context.SaveChanges() < 1)
             {
@@ -123,6 +121,7 @@ namespace CrowDo
                 return result;
             }
 
+            result.Data = true;
             return result;
         }
 
@@ -132,26 +131,42 @@ namespace CrowDo
             var context = new CrowDoDbContext();
 
 
-            var project = context.Set<Project>().SingleOrDefault(p => p.ProjectId == projectId);
-            var user = context.Set<User>().SingleOrDefault(u => u.UserId == userId);
+            var project = context.Set<Project>()
+                .SingleOrDefault(p => p.ProjectId == projectId);
+
+            var user = context.Set<User>()
+                .Include(u => u.CreatedProjects)
+                .SingleOrDefault(u => u.UserId == userId);
+
+            if (!user.CreatedProjects.Contains(project))
+            {
+                result.ErrorCode = 15;
+                result.ErrorText = "You don't have creator rights for this project";
+
+                return result;
+            }
+
+            if (project == null)
+            {
+                result.ErrorCode = 22;
+                result.ErrorText = "No project was found";
+                return result;
+            }
 
             user.CreatedProjects.Remove(project);
 
-
-            context.Remove(project);
-
-
+            project.IsAvailable = false;
             user.CreatedProjectsCount--;
 
-            if (context.SaveChanges() < 1)  //** vaalidation for Savechanges : registration is ok or not
+            if (context.SaveChanges() < 1)  //** validation for Savechanges
             {
                 result.ErrorCode = 7;
-                result.ErrorText = "No save";
+                result.ErrorText = "An error occurred while saving data";
                 return result;
             }
 
 
-
+            result.Data = true;
             return result;
 
         }
@@ -161,21 +176,42 @@ namespace CrowDo
             var result = new Result<bool>();
             var context = new CrowDoDbContext();
 
-            var reward = context.Set<RewardPackage>().SingleOrDefault(u => u.RewardPackageId == rewardPackageId);
-            var project = context.Set<Project>().SingleOrDefault(p => p.ProjectId == projectId);
+            var reward = context.Set<RewardPackage>()
+                .SingleOrDefault(u => u.RewardPackageId == rewardPackageId);
+
+            var project = context.Set<Project>()
+                .SingleOrDefault(p => p.ProjectId == projectId);
+
+            var user = context.Set<User>()
+                .Include(u => u.CreatedProjects)
+                .SingleOrDefault(u => u.UserId == userId);
+
+            if (!user.CreatedProjects.Contains(project))
+            {
+                result.ErrorCode = 15;
+                result.ErrorText = "You don't have creator rights for this project";
+
+                return result;
+            }
+
+            if (project == null)
+            {
+                result.ErrorCode = 22;
+                result.ErrorText = "No project was found";
+                return result;
+            }
 
             project.RewardPackages.Remove(reward);
             context.Remove(reward);
 
-            if (context.SaveChanges() < 1)  //** vaalidation for Savechanges : registration is ok or not
+            if (context.SaveChanges() < 1)  //** validation for Savechanges
             {
                 result.ErrorCode = 7;
-                result.ErrorText = "No save";
+                result.ErrorText = "An error occurred while saving data";
                 return result;
             }
 
-
-
+            result.Data = true;
             return result;
         }
 
@@ -184,8 +220,29 @@ namespace CrowDo
         {
             var result = new Result<bool>();
             var context = new CrowDoDbContext();
-            var updateProject = context.Set<Project>().SingleOrDefault(b => b.ProjectId == projectId);
 
+            var updateProject = context.Set<Project>()
+                .SingleOrDefault(b => b.ProjectId == projectId);
+
+            var user = context.Set<User>()
+                .Include(u => u.CreatedProjects)
+                .SingleOrDefault(u => u.UserId == userId);
+
+            if (!user.CreatedProjects.Contains(updateProject))
+            {
+                result.ErrorCode = 15;
+                result.ErrorText = "You don't have creator rights for this project";
+
+                return result;
+            }
+
+            if (updateProject == null)
+            {
+                result.ErrorCode = 22;
+                result.ErrorText = "No project was found";
+                return result;
+            }
+            
             updateProject.ProjectName = NewProjectName;
             updateProject.ProjectCategory = newProjectCategory;
             updateProject.ProjectGoal = newProjectGoal;
@@ -206,7 +263,7 @@ namespace CrowDo
                 return result;
             }
 
-
+            result.Data = true;
             return result;
         }
 
@@ -249,11 +306,18 @@ namespace CrowDo
                 .Include(u => u.CreatedProjects)
                 .SingleOrDefault(u => u.UserId == userId);
 
-            if (user.CreatedProjects.Contains(project))
+            if (!user.CreatedProjects.Contains(project))
             {
                 result.ErrorCode = 15;
                 result.ErrorText = "You don't have creator rights for this project";
 
+                return result;
+            }
+
+            if (project == null)
+            {
+                result.ErrorCode = 22;
+                result.ErrorText = "No project was found";
                 return result;
             }
 
@@ -267,6 +331,7 @@ namespace CrowDo
                 return result;
             }
 
+            result.Data = true;
             return result; 
         }
     }

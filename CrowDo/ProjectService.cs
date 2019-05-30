@@ -71,6 +71,13 @@ namespace CrowDo
                 return result;
             }
 
+            if (project.IsAvailable == false)
+            {
+                result.ErrorCode = 29;
+                result.ErrorText = "Project not available";
+                return result;
+            }
+
             if (!project.RewardPackages.Contains(package))
             {
                 result.ErrorCode = 25;
@@ -144,7 +151,7 @@ namespace CrowDo
 
             result.Data = projectList;
             return result;
-        }   ///***************************///
+        }
 
         public Result<Project> GetProjectDetails(int projectId)
         {
@@ -160,6 +167,13 @@ namespace CrowDo
             {
                 result.ErrorCode = 22;
                 result.ErrorText = "No project was found";
+                return result;
+            }
+
+            if (project.IsAvailable == false)
+            {
+                result.ErrorCode = 29;
+                result.ErrorText = "Project not available";
                 return result;
             }
 
@@ -189,7 +203,7 @@ namespace CrowDo
             }
 
             return true;
-        }//prepei na paei se alli xexwristi class
+        }
 
         public Result<Project> PublishProject(string creatorEmail, string projectName
             , string category, string description, decimal projectGoal, DateTime creationDate, DateTime monthDuration, int estimatedMonthDuration)
@@ -240,6 +254,7 @@ namespace CrowDo
                 return result;
             }
 
+            result.Data = project;
             return result;
         }
 
@@ -279,7 +294,6 @@ namespace CrowDo
             }
 
             result.Data = projectList;
-
             return result;
         }
 
@@ -290,17 +304,24 @@ namespace CrowDo
                 .Where(p => p.ProjectCategory == category)
                 .Where(p => p.IsAvailable == true)
                 .ToList();
-            var result = new Result<List<Project>>
+
+            var result = new Result<List<Project>>();
+
+            if (projectList == null)
             {
-                Data = projectList
-            };
-            return result;
-           
+                result.ErrorCode = 22;
+                result.ErrorText = "No project was found";
+                return result;
+            }
+
+            result.Data = projectList;
+            return result; 
         }
 
         public Result<List<Project>> SearchByCreator(string email)
         {
             var context = new CrowDoDbContext();
+
             var creator = context.Set<User>()
                 .Include(c => c.CreatedProjects)
                 .SingleOrDefault(p => p.Email == email);
@@ -334,39 +355,24 @@ namespace CrowDo
         //    return result;
         //}
 
-        public struct Search
-        {
-            public string Category;
-            public string Name;
-            public int Year;
-        }
-
-
-        public Result<List<Project>> SearchByText(Search search)
-        {
-            var result = new Result<List<Project>>();
-
-            var context = new CrowDoDbContext();
-
-            //var l = context.Set<Project>().Where(p => p.ProjectName == search.Name).Where()
-
-            return result;
-
-        }
-
         public Result<List<Project>> SearchByYear(int year)
         {
             var context = new CrowDoDbContext();
             var projectList = context.Set<Project>()
-                //.Include(p => p.RewardPackages)
                 .Where(p => p.CreationDate.Year == year)
                 .Where(p => p.IsAvailable == true)
                 .ToList();
 
-            var result = new Result<List<Project>>
+            var result = new Result<List<Project>>();
+
+            if (projectList == null)
             {
-                Data = projectList
-            };
+                result.ErrorCode = 22;
+                result.ErrorText = "No project was found";
+                return result;
+            }
+
+            result.Data = projectList;
             return result;
         }
     }

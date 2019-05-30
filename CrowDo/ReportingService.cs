@@ -18,6 +18,7 @@ namespace CrowDo
             var result = new Result<List<Project>>();
 
             var popularProjects = context.Set<Project>()
+                .Where(p => p.IsAvailable == true)
                 .OrderByDescending(p => p.Visits)
                 .Take(5)
                 .ToList();
@@ -32,6 +33,7 @@ namespace CrowDo
             var result = new Result<List<Project>>();
 
             var recentProjects = context.Set<Project>()
+                .Where(p => p.IsAvailable == true)
                 .OrderByDescending(p => p.CreationDate)
                 .Take(5)
                 .ToList();
@@ -48,6 +50,7 @@ namespace CrowDo
 
             var topCreators = context.Set<User>()
                 .OrderByDescending(u => u.CreatedProjectsCount)
+                .Where(u => u.CreatedProjectsCount >0)
                 .Take(20)
                 .ToList();
 
@@ -59,10 +62,11 @@ namespace CrowDo
         {
             var context = new CrowDoDbContext();
             var result = new Result<bool>();
+
             var monthlyProjects = context.Set<Project>()
                 .Include(p => p.RewardPackages)
-                  .Where(p => p.CreationDate.AddDays(30) >= DateTime.Today)
-                  .ToList();
+                .Where(p => p.CreationDate.AddDays(30) >= DateTime.Today)
+                .ToList();
 
             XSSFWorkbook wb = new XSSFWorkbook();
             ISheet sheet = wb.CreateSheet("Mysheet");
