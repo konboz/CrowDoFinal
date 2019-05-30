@@ -183,11 +183,11 @@ namespace CrowDoAPI.Controllers
         [HttpPost("/IProjectService/Users/UserEmail:{creatorEmail}/PublihProject")]
         public ActionResult<Result<Project>> PostNewProject(string creatorEmail, [FromBody] ServiceProjectOptionPublish package)
         {
-            var projectService = new ProjectService();
-
-            return projectService.PublishProject(creatorEmail, package.name
+            var result = projectService_.PublishProject(creatorEmail, package.name
             , package.category, package.description, package.projectGoal
             , package.expirationInMonths, package.creationDate, package.estimatedDurationInMonths);
+
+            return result;
 
         }
 
