@@ -322,15 +322,23 @@ namespace CrowDo
         {
             var context = new CrowDoDbContext();
             var projectList = context.Set<Project>()
-                //.Include(p => p.RewardPackages)
+                .Include(p => p.RewardPackages)
                 .Where(p => p.CreationDate.Year == year)
                 .Where(p => p.IsAvailable == true)
                 .ToList();
+            var result = new Result<List<Project>>();
 
-            var result = new Result<List<Project>>
+
+            if (projectList == null)
             {
-                Data = projectList
-            };
+                result.ErrorCode = 24;
+                result.ErrorText = "No project was found";
+                return result;
+            }
+
+
+            result.Data = projectList;
+           
             return result;
         }
     }

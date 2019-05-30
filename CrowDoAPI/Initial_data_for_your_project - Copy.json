@@ -1,0 +1,27 @@
+[{"nameOfProject":"Ballacio",
+"description":"Management of local football championship",
+"creator":"alpha@gmail.com",
+"keywords":"football, management",
+"demandedfunds":30000,
+"dateOfCreation": "2019-03-01",
+"deadline": "2019-06-01",
+"estimatedDurationInMonths":24},
+{"nameOfProject":"AntiPhishing",
+"description":"Techniques of sites securing",
+"creator":"beta@gmail.com",
+"keywords":"security, on-line commerce",
+"demandedfunds":40000,
+"dateOfCreation": "2019-03-04",
+"deadline": "2019-06-04",
+"estimatedDurationInMonths":18},
+{"nameOfProject":"SeaWeed",
+"description":"Use of sea weed for industry",
+"creator":"theta@gmail.com",
+"keywords":"ecology, better life, sustainability",
+"demandedfunds":12000,
+"dateOfCreation": "2019-04-08",
+"deadline": "2019-06-08",
+"estimatedDurationInMonths":24}
+]
+
+ 

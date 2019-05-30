@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrowDo.Migrations
 {
     [DbContext(typeof(CrowDoDbContext))]
-    [Migration("20190529215908_initial")]
-    partial class initial
+    [Migration("20190530132138_initial-create")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,0 +1,24 @@
+[{"name":"Anestis Grigoriadis",
+"email": "alpha@gmail.com",
+"address":"Amaroussio, Athens",
+"dateOfBirth" : "2000-01-01",
+"personalMoto":"Life is better when you create software"},
+{"name":"Dimitris Billidis",
+"email": "beta@gmail.com",
+"address":"Kifissia, Athens",
+"dateOfBirth" : "2000-01-01",
+"personalMoto":"Sleep well, think more"},
+{"name":"Georgios Billidis",
+"email": "theta@gmail.com",
+"address":"Chalandri, Athens",
+"dateOfBirth" : "2000-01-01",
+"personalMoto":"Work, eat and sleep. Then, dream!"},
+{"name":"Zacharias Sontang",
+"email": "zeta@gmail.com",
+"address":"Iraclio, Athens",
+"dateOfBirth" : "2000-01-01",
+"personalMoto":"Drink until you get new ideas"}
+
+]
+
+ 

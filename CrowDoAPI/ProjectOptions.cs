@@ -9,7 +9,7 @@ namespace CrowDoAPI
     {
         public string ProjectName { get; set; }
 
-        public string ProjectCategory { get; set; } //*** ayto prepei na ginei dynamiko
+        public string ProjectCategory { get; set; } 
 
         public string Description { get; set; }
 

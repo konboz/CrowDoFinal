@@ -10,7 +10,7 @@ namespace CrowDo
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer(@"Server=localhost;Database=CrowDo; Trusted_Connection = True; ConnectRetryCount = 0;");
+                .UseSqlServer(@"Server=localhost;Database=CrowDo4; Trusted_Connection = True; ConnectRetryCount = 0;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -20,6 +20,7 @@ namespace CrowDo
             modelBuilder.Entity<Project>();
             modelBuilder.Entity<RewardPackage>();
             modelBuilder.Entity<User>();
+            modelBuilder.Entity<ProjectMedia>();
             modelBuilder.Entity<LinkingTable>()
                 .HasKey(bp => new { bp.UserId, bp.RewardPackageId, bp.ProjectId });
         }
