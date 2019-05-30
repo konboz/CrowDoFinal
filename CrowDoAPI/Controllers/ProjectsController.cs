@@ -457,7 +457,7 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpPost("/IProjectService/Users/UsersProject/{userId}/{projectId}/{rewardPackageID}fund")]
+        [HttpPost("/IProjectService/Users/{userId}/Projects/{projectId}/{rewardPackageId}/fund")]
         public ActionResult<Result<bool>> FundProject(int userId, int projectId, int rewardPackageId)
         {
             var result = projectService_.FundProject(userId, projectId
