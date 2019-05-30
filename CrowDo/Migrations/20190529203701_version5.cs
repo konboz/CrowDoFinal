@@ -42,7 +42,7 @@ namespace CrowDo.Migrations
                     Visits = table.Column<int>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     ExpirationDate = table.Column<DateTime>(nullable: false),
-                    EstimatedDurationInMonths = table.Column<int>(nullable: false),
+                    EstimatedDurationInMonths = table.Column<DateTime>(nullable: false),
                     StatusUpdate = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: true)
                 },
@@ -55,6 +55,26 @@ namespace CrowDo.Migrations
                         principalTable: "User",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectMedia",
+                columns: table => new
+                {
+                    ProjectMediaId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ProjectId = table.Column<int>(nullable: false),
+                    FileName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectMedia", x => x.ProjectMediaId);
+                    table.ForeignKey(
+                        name: "FK_ProjectMedia_Project_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Project",
+                        principalColumn: "ProjectId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,7 +100,7 @@ namespace CrowDo.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BackerReward",
+                name: "LinkingTable",
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
@@ -89,21 +109,21 @@ namespace CrowDo.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BackerReward", x => new { x.UserId, x.RewardPackageId, x.ProjectId });
+                    table.PrimaryKey("PK_LinkingTable", x => new { x.UserId, x.RewardPackageId, x.ProjectId });
                     table.ForeignKey(
-                        name: "FK_BackerReward_Project_ProjectId",
+                        name: "FK_LinkingTable_Project_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Project",
                         principalColumn: "ProjectId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BackerReward_RewardPackage_RewardPackageId",
+                        name: "FK_LinkingTable_RewardPackage_RewardPackageId",
                         column: x => x.RewardPackageId,
                         principalTable: "RewardPackage",
                         principalColumn: "RewardPackageId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BackerReward_User_UserId",
+                        name: "FK_LinkingTable_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId",
@@ -111,19 +131,24 @@ namespace CrowDo.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BackerReward_ProjectId",
-                table: "BackerReward",
+                name: "IX_LinkingTable_ProjectId",
+                table: "LinkingTable",
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BackerReward_RewardPackageId",
-                table: "BackerReward",
+                name: "IX_LinkingTable_RewardPackageId",
+                table: "LinkingTable",
                 column: "RewardPackageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Project_UserId",
                 table: "Project",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectMedia_ProjectId",
+                table: "ProjectMedia",
+                column: "ProjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RewardPackage_ProjectId",
@@ -134,7 +159,10 @@ namespace CrowDo.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BackerReward");
+                name: "LinkingTable");
+
+            migrationBuilder.DropTable(
+                name: "ProjectMedia");
 
             migrationBuilder.DropTable(
                 name: "RewardPackage");

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CrowDo
 {
-    public class BackerReward
+    public class LinkingTable
     {
         public int UserId { get; set; }
         public int RewardPackageId { get; set; }

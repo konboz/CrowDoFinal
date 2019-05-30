@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrowDo.Migrations
 {
     [DbContext(typeof(CrowDoDbContext))]
-    [Migration("20190528101834_version5")]
+    [Migration("20190529203701_version5")]
     partial class version5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace CrowDo.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CrowDo.BackerReward", b =>
+            modelBuilder.Entity("CrowDo.LinkingTable", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -35,7 +35,7 @@ namespace CrowDo.Migrations
 
                     b.HasIndex("RewardPackageId");
 
-                    b.ToTable("BackerReward");
+                    b.ToTable("LinkingTable");
                 });
 
             modelBuilder.Entity("CrowDo.Project", b =>
@@ -48,7 +48,7 @@ namespace CrowDo.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("EstimatedDurationInMonths");
+                    b.Property<DateTime>("EstimatedDurationInMonths");
 
                     b.Property<DateTime>("ExpirationDate");
 
@@ -75,6 +75,23 @@ namespace CrowDo.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Project");
+                });
+
+            modelBuilder.Entity("CrowDo.ProjectMedia", b =>
+                {
+                    b.Property<int>("ProjectMediaId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FileName");
+
+                    b.Property<int>("ProjectId");
+
+                    b.HasKey("ProjectMediaId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectMedia");
                 });
 
             modelBuilder.Entity("CrowDo.RewardPackage", b =>
@@ -121,10 +138,10 @@ namespace CrowDo.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("CrowDo.BackerReward", b =>
+            modelBuilder.Entity("CrowDo.LinkingTable", b =>
                 {
                     b.HasOne("CrowDo.Project", "Project")
-                        .WithMany("BackerRewards")
+                        .WithMany("LinkingTables")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -144,6 +161,14 @@ namespace CrowDo.Migrations
                     b.HasOne("CrowDo.User")
                         .WithMany("CreatedProjects")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("CrowDo.ProjectMedia", b =>
+                {
+                    b.HasOne("CrowDo.Project")
+                        .WithMany("MultimediaFiles")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("CrowDo.RewardPackage", b =>

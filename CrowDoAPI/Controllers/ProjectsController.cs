@@ -110,8 +110,7 @@ namespace CrowDoAPI.Controllers
             public string category;
             public string description;
             public decimal projectGoal;
-            public DateTime expirationInMonths;
-            public DateTime creationDate;
+            public int expirationInMonths;
             public int estimatedDurationInMonths;
         }
 
@@ -133,26 +132,17 @@ namespace CrowDoAPI.Controllers
             , rewardPackageId);
         }
         
-        // POST api/projects/5
-        [HttpPost("publish/{creatorEmail}")]
-        public ActionResult<Result<Project>> PostNewProject(string creatorEmail, [FromBody] Package package)
-        {
-            var projectService = new ProjectService();
+        // POST api/projects
+        //[HttpPost("publish/{creatorEmail}")]
+        //public ActionResult<Result<Project>> PostNewProject(string creatorEmail, [FromBody] Package package)
+        //{
+        //    var projectService = new ProjectService();
 
-            return projectService.PublishProject(creatorEmail, package.name
-            , package.category, package.description, package.projectGoal
-            , package.expirationInMonths, package.creationDate, package.estimatedDurationInMonths);
+        //    return projectService.PublishProject(creatorEmail, package.name
+        //    , package.category, package.description, package.projectGoal
+        //    , package.expirationInMonths, package.estimatedDurationInMonths);
 
-        }
-
-        // POST api/projects/5
-        [HttpPost("addPackage/{userId}/{projectId}")]
-        public ActionResult<Result<bool>> AddRewardPackage(int userId, int projectId, [FromBody] RewardPackage package)
-        {
-            var dashboardService = new DashboardService();
-
-            return dashboardService.AddRewardPackage(userId, projectId, package.PackageName, package.RewardName, package.Price);
-        }
+        //}
 
         public struct Edits
         {

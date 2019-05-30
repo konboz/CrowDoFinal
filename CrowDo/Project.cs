@@ -44,7 +44,7 @@ namespace CrowDo
 
         public List<RewardPackage> RewardPackages { get; set; }
 
-        public List<BackerReward> BackerRewards { get; set; }
+        public List<LinkingTable> LinkingTables { get; set; }
 
         public List<ProjectMedia> MultimediaFiles { get; set; }
 
@@ -53,7 +53,7 @@ namespace CrowDo
         public Project()
         {
             List<RewardPackage> RewardPackages = new List<RewardPackage>();
-            List<BackerReward> BackerRewards = new List<BackerReward>();
+            List<LinkingTable> LinkingTables = new List<LinkingTable>();
             //Visits = 0;
         }
 

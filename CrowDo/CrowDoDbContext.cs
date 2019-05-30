@@ -20,7 +20,8 @@ namespace CrowDo
             modelBuilder.Entity<Project>();
             modelBuilder.Entity<RewardPackage>();
             modelBuilder.Entity<User>();
-            modelBuilder.Entity<BackerReward>()
+            modelBuilder.Entity<ProjectMedia>();
+            modelBuilder.Entity<LinkingTable>()
                 .HasKey(bp => new { bp.UserId, bp.RewardPackageId, bp.ProjectId });
         }
     }

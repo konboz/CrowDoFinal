@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CrowDo
 {
-    class CentralService : ICentralService
+    public class CentralService : ICentralService
     {
         public Result<bool> ImportProject(string fileName)
         {
