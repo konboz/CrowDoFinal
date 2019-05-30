@@ -70,13 +70,13 @@ namespace CrowDoAPI.Controllers
             return projectService.SearchByCreator(creatorName);
         }
 
-        [HttpGet("searchByText/{text}")]
-        public ActionResult<Result<List<Project>>> GetProjectByText(string text)
-        {
-            var projectService = new ProjectService();
+        //[HttpGet("searchByText/{text}")]
+        //public ActionResult<Result<List<Project>>> GetProjectByText(string text)
+        //{
+        //    var projectService = new ProjectService();
        
-            return projectService.SearchByText(text);
-        }
+        //    return projectService.SearchByText(text);
+        //}
 
         // GET api/projects/5
         [HttpGet("searchByCategory/{category}")]

@@ -243,45 +243,45 @@ namespace CrowDo
             return result;
         }
 
-        //public Result<List<Project>> SearchByText(string text)
-        //{
-        //    var context = new CrowDoDbContext();
-        //    var result = new Result<List<Project>>();
+        public Result<List<Project>> SearchByText(string text)
+        {
+            var context = new CrowDoDbContext();
+            var result = new Result<List<Project>>();
 
-        //    var projectList = context.Set<Project>()
-        //        .Where(p => p.ProjectCategory.Contains(text))
-        //        .Where(p => p.ProjectName.Contains(text))
-        //        .Where(p => p.IsAvailable == true)
-        //        .ToList();
-        //    //var finalProjectList = new List<Project>();
+            var projectList = context.Set<Project>()
+                .Where(p => p.ProjectCategory.Contains(text))
+                .Where(p => p.ProjectName.Contains(text))
+                .Where(p => p.IsAvailable == true)
+                .ToList();
+            //var finalProjectList = new List<Project>();
 
-        //    if (projectList == null)
-        //    {
-        //        //foreach (Project p in projectList)
-        //        //{
-        //        //    if (text.Contains(p.ProjectName))
-        //        //    {
-        //        //        finalProjectList.Add(p);
-        //        //    }
-        //        //}
+            if (projectList == null)
+            {
+                //foreach (Project p in projectList)
+                //{
+                //    if (text.Contains(p.ProjectName))
+                //    {
+                //        finalProjectList.Add(p);
+                //    }
+                //}
 
-        //        //if (finalProjectList == null)
-        //        //{
-        //        //    result.Data = projectList;
+                //if (finalProjectList == null)
+                //{
+                //    result.Data = projectList;
 
-        //        //    return result;
-        //        //}
+                //    return result;
+                //}
 
-        //        result.ErrorCode = 22;
-        //        result.ErrorText = "No project found";
+                result.ErrorCode = 22;
+                result.ErrorText = "No project found";
 
-        //        return result;
-        //    }
+                return result;
+            }
 
-        //    result.Data = projectList;
+            result.Data = projectList;
 
-        //    return result;
-        //}
+            return result;
+        }
 
         public Result<List<Project>> SearchByCategory(string category)
         {
