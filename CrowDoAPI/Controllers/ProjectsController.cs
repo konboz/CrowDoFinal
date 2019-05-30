@@ -66,7 +66,7 @@ namespace CrowDoAPI.Controllers
         [HttpGet]
         public void DeadlineCheck()
         {
-            
+
             projectService_.DeadlineCheck();
         }
 
@@ -107,15 +107,15 @@ namespace CrowDoAPI.Controllers
         [HttpGet("/IProjectService/Users/Projects/ProjectId:{projectId}/ProjectDetails")]
         public ActionResult<Result<Project>> GetProjectDetails(int projectId)
         {
-            var result= projectService_.GetProjectDetails(projectId);
+            var result = projectService_.GetProjectDetails(projectId);
             return result;
         }
 
         // GET api/projects/5
-        [HttpGet("/IProjectService/User/UserName:{CreatorName}/Projects")]
+        [HttpGet("/IProjectService/User/UserName:{CreatorName}/Projects/SearchByCreator")]
         public ActionResult<Result<List<Project>>> GetProjectByCreator(string creatorName)
         {
-           var result = projectService_.SearchByCreator(creatorName);
+            var result = projectService_.SearchByCreator(creatorName);
             return result;
         }
 
@@ -142,6 +142,33 @@ namespace CrowDoAPI.Controllers
 
             return result;
         }
+
+        //[HttpGet("/IProjectService/Project/SearchByText")]
+        //public ActionResult<Result<List<Project>>> GetSearchByText(Search search)
+        //{
+        //    var result1 = projectService_.SearchByYear(search.Year);
+        //    var result2 = projectService_.SearchByCreator(search.Name);
+        //    var result3 = projectService_.SearchByCategory(search.Category);
+        //    if (result1.Data != null && result2.Data != null)
+        //    { var r = result1.Data.Union(result2.Data).ToList();
+        //        if (r != null) { return r; }
+        //    }
+
+        //    if (result1.Data != null && result3.Data != null)
+        //    { var r1 = result1.Data.Union(result3.Data).ToList();
+        //        if (r1 != null) { var result = r1;  }
+               
+        //    }
+
+        //    if (result2.Data != null && result3.Data != null)
+        //    {
+        //        var r2 = result1.Data.Union(result2.Data).ToList();
+        //        if (r2 != null) { var result = r2;  }
+        //    }
+
+           
+        //    return result;
+        //}
 
         [HttpGet("/IProjectService/Project/PendingProjects")]
         public ActionResult<Result<List<Project>>> GetPendingProjects()
@@ -200,7 +227,7 @@ namespace CrowDoAPI.Controllers
         //    return dashboardService.AddRewardPackage(userId, projectId, package.PackageName, package.RewardName, package.Price);
         //}
 
-      
+
 
         // POST api/values
         [HttpPost("/IDashBoardService/Users/UserId:{userId}/Project/ProjectId:{projectId}/AddRewardPackage")]
@@ -238,25 +265,10 @@ namespace CrowDoAPI.Controllers
 
         }
 
-        [HttpPost("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/RewardPackages/PewardPackageId:{rewardPackageId}/Delete")]
-        public void Post(int userId, int projectId, int rewardPackageId)
-        {
-
-            dashboardService_.DeleteRewardPackage(userId, projectId, rewardPackageId);
-
-        }
-
-        [HttpPost("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/DeleteProject")]
-        public void Post(int userId, int projectId)
-        {
-
-            dashboardService_.DeleteProject(userId, projectId);
-
-        }
 
         // POST api/projects
         [HttpPost("/IUserService/Users/Register")]
-        public ActionResult<Result<User>> CreateUser( [FromBody] UsersServiceOptionsRegister edit)
+        public ActionResult<Result<User>> CreateUser([FromBody] UsersServiceOptionsRegister edit)
         {
             var result = userService_.Create(edit.Email, edit.Name, edit.Address, edit.BirthDate);
 
@@ -277,6 +289,27 @@ namespace CrowDoAPI.Controllers
         {
             var result = userService_.Delete(userEmail);
             return result;
+
+        }
+
+
+        [HttpDelete("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/RewardPackages/PewardPackageId:{rewardPackageId}/Delete")]
+        public ActionResult<Result<bool>> Delete(int userId, int projectId, int rewardPackageId)
+        {
+
+            var result = dashboardService_.DeleteRewardPackage(userId, projectId, rewardPackageId);
+            return result;
+
+        }
+
+        [HttpDelete("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/DeleteProject")]
+        public ActionResult<Result<bool>> Delete(int userId, int projectId)
+        {
+
+            var result = dashboardService_.DeleteProject(userId, projectId);
+
+            return result;
+
 
         }
     }
