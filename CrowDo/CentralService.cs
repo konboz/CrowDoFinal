@@ -12,20 +12,20 @@ namespace CrowDo
         {
             var result = new Result<bool>();
             var projectService = new ProjectService();
-            // var context = new CrowdoDbContext();
-
 
             string data = File.ReadAllText($@"{fileName}");
 
             var importDatas = JsonConvert.DeserializeObject<List<ImportProject>>(data);
+
             foreach (var importData in importDatas)
             {
                 var response = projectService.PublishProject(importData.creator, importData.nameOfProject, importData.keywords, importData.description,
                     importData.demandedfunds, importData.dateOfCreation, importData.deadline, importData.estimatedDurationInMonths);
+
                 if (response.ErrorCode != 0)
                 {
-                    result.ErrorCode = 7;
-                    result.ErrorText = "Project not saved!Why";
+                    result.ErrorCode = response.ErrorCode;
+                    result.ErrorText = response.ErrorText;
                     return result;
                 }
             }
@@ -50,14 +50,15 @@ namespace CrowDo
                 Result<User> response = userService.Create(importData.email, importData.name, importData.address, importData.dateOfBirth);
                 if (response.ErrorCode != 0)
                 {
-                    result.ErrorCode = 7;
-                    result.ErrorText = "User not saved!";
+                    result.ErrorCode = response.ErrorCode;
+                    result.ErrorText = response.ErrorText;
                     return result;
                 }
 
+                
             }
 
-            result.Data = true;
+            
             return result;
 
         }

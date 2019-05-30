@@ -9,17 +9,31 @@ namespace CrowDo
     public class DashboardService : IDashboardService
     {
 
-
-        public Result<bool> AddMultimediaFile(int projectId, string multimediaFile)
+        public Result<bool> AddMultimediaFile(int userId, int projectId, string multimediaFile)
         {
             var result = new Result<bool>();
             var context = new CrowDoDbContext();
 
-            //file.MultimediaFile = data;
+            var user = context.Set<User>()
+                .Include(u => u.CreatedProjects)
+                .SingleOrDefault(u => u.UserId == userId);
 
-            var project = context.Set<Project>().SingleOrDefault(p => p.ProjectId == projectId);
+            var project = context.Set<Project>()
+               .Include(p => p.MultimediaFiles)
+               .SingleOrDefault(p => p.ProjectId == projectId);
 
-            project.MultimediaFiles.Add(new ProjectMedia() { FileName = multimediaFile });
+            if (user.CreatedProjects.Contains(project))
+            {
+                result.ErrorCode = 15;
+                result.ErrorText = "You don't have creator rights for this project";
+
+                return result;
+            }
+
+            project.MultimediaFiles.Add(new ProjectMedia()
+            {
+                FileName = multimediaFile
+            });
 
 
             if (context.SaveChanges() < 1)  //** vaalidation for Savechanges : registration is ok or not
@@ -31,8 +45,6 @@ namespace CrowDo
 
             result.Data = true;
             return result;
-
-
         }
 
         public Result<bool> AddRewardPackage(int userId, int projectId, string packageName, string rewardName, decimal price)
@@ -47,9 +59,20 @@ namespace CrowDo
                 Price = price
             };
 
+            var user = context.Set<User>()
+                .Include(u => u.CreatedProjects)
+                .SingleOrDefault(u => u.UserId == userId);
+
             var project = context.Set<Project>()
-            .Where(c => c.ProjectId == projectId)
-            .SingleOrDefault();
+            .SingleOrDefault(c => c.ProjectId == projectId);
+
+            if (user.CreatedProjects.Contains(project))
+            {
+                result.ErrorCode = 15;
+                result.ErrorText = "You don't have creator rights for this project";
+
+                return result;
+            }
 
             if (project == null)
             {
@@ -156,7 +179,7 @@ namespace CrowDo
             return result;
         }
 
-        public Result<bool> EditProject(int projectId, string NewProjectName, string newProjectCategory, string description,
+        public Result<bool> EditProject(int userId, int projectId, string NewProjectName, string newProjectCategory, string description,
             decimal newProjectGoal, DateTime monthDuration, int estimatedMonthDuration)
         {
             var result = new Result<bool>();
@@ -191,44 +214,60 @@ namespace CrowDo
         {
             var context = new CrowDoDbContext();
             var result = new Result<string>();
-            var project = context.Set<Project>().SingleOrDefault(i => i.ProjectId == projectId);
+
+            var project = context.Set<Project>()
+                .SingleOrDefault(i => i.ProjectId == projectId);
 
             if (project == null)
             {
-                result.ErrorCode = 404;
+                result.ErrorCode = 22;
                 result.ErrorText = $"No project found with id :{projectId}";
 
                 return result;
             }
 
-            var financialProgerss = (100 * project.Funds) / project.ProjectGoal;
+            var financialProgress = (100 * project.Funds) / project.ProjectGoal;
 
-            var p = Convert.ToInt32(financialProgerss); //** bug gt strogulopoiei pros ta panw
+            var p = Convert.ToInt32(financialProgress); //** It rounds up the number, it's marked successful when progress is above 99.5%
 
             result.Data = $"{p}%";
 
             return result;
 
 
-        } //** an tha valw lista
+        } 
 
         public Result<bool> StatusUpdate(int userId, int projectId, string updateText)
         {
             var result = new Result<bool>();
             var context = new CrowDoDbContext();
-            var project = context.Set<Project>().SingleOrDefault(p => p.ProjectId == projectId);
+
+            var project = context.Set<Project>()
+                .SingleOrDefault(p => p.ProjectId == projectId);
+
+            var user = context.Set<User>()
+                .Include(u => u.CreatedProjects)
+                .SingleOrDefault(u => u.UserId == userId);
+
+            if (user.CreatedProjects.Contains(project))
+            {
+                result.ErrorCode = 15;
+                result.ErrorText = "You don't have creator rights for this project";
+
+                return result;
+            }
 
             project.StatusUpdate = updateText;
 
 
-            if (context.SaveChanges() < 1)  //** vaalidation for Savechanges : registration is ok or not
+            if (context.SaveChanges() < 1)  //** validation for Savechanges
             {
                 result.ErrorCode = 7;
-                result.ErrorText = "No save";
+                result.ErrorText = "An error occured while saving data";
                 return result;
             }
 
-            return result; //** ! propertie
+            return result; 
         }
     }
 }

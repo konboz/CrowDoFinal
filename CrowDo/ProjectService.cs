@@ -8,10 +8,10 @@ namespace CrowDo
 {
     public class ProjectService : IProjectService
     {
-        public Result<bool> DeadlineCheck()     //Tsekarei an exoun lixei projects kathe fora pou anoigei i arxiki selida
+        public Result<bool> DeadlineCheck()     //Checks for expired Projects
         {
             var context = new CrowDoDbContext();
-            var result = new Result<bool>(); 
+            var result = new Result<bool>();
 
             var expiredProjects = context.Set<Project>()
                 .Where(p => p.ExpirationDate <= DateTime.Now)
@@ -31,7 +31,7 @@ namespace CrowDo
             }
 
             return result;
-        } 
+        }
 
         public Result<bool> FundProject(int userId, int projectId, int rewardPackageId)
         {

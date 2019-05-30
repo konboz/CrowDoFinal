@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CrowDo;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,8 +26,16 @@ namespace CrowDoAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddDbContext<CrowdoDbContext>(options =>
+            // options.UseSqlServer(@"Server=localhost; Database=CrowDo; Trusted_Connection = True; ConnectRetryCount = 0;"));
 
+            services.AddTransient<IDashboardService, DashboardService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<ICentralService, CentralService>();
+            services.AddTransient<IReportingService, ReportingService>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerDocument();
         }
 

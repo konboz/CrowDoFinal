@@ -7,7 +7,7 @@ namespace CrowDo
     public interface IDashboardService
     {
 
-        Result<bool> EditProject(int projectId, string NewProjectName, string newProjectCategory, string description, decimal newProjectGoal,
+        Result<bool> EditProject(int userId, int projectId, string NewProjectName, string newProjectCategory, string description, decimal newProjectGoal,
             DateTime monthDuration, int estimatedMonthDuration);
 
         Result<bool> StatusUpdate(int userId, int projectId, string updateText);
@@ -20,7 +20,7 @@ namespace CrowDo
 
         Result<string> GetFinancialProgress(int projectId);
 
-        Result<bool> AddMultimediaFile(int projectId, string multiFile);
+        Result<bool> AddMultimediaFile(int userId, int projectId, string multiFile);
 
     }
 }
