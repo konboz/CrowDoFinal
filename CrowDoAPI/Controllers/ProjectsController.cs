@@ -13,46 +13,27 @@ namespace CrowDoAPI.Controllers
     {
 
         private IDashboardService dashboardService_;
+        private IUserService userService_;
+        private IProjectService projectService_;
+        private IReportingService reportingService_;
+        private ICentralService centralService_;
 
-        public ProjectsController(IDashboardService dashboardService_)
+
+
+        public ProjectsController(IDashboardService dashboardService_, IUserService userService_,
+            IProjectService projectService_, IReportingService reportingService_, ICentralService centralService_)
         {
             this.dashboardService_ = dashboardService_;
+            this.userService_ = userService_;
+            this.projectService_ = projectService_;
+            this.reportingService_ = reportingService_;
+            this.centralService_ = centralService_;
+
         }
         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..
 
-        private IUserService userService_;
+        
 
-        public ProjectsController(IUserService userService_)
-        {
-            this.userService_ = userService_;
-        }
-
-        ////>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
-
-        private IProjectService projectService_;
-        public ProjectsController(IProjectService projectService_)
-        {
-            this.projectService_ = projectService_;
-        }
-
-        /////>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
-        private IReportingService reportingService_;
-
-        public ProjectsController(IReportingService reportingService_)
-        {
-            this.reportingService_ = reportingService_;
-        }
-
-        ////>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
-
-        private ICentralService centralService_;
-
-        public ProjectsController(ICentralService centralService_)
-        {
-            this.centralService_ = centralService_;
-        }
-
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
 
         // GET api/values
         [HttpGet("/IDashBoardService/Projects/projectId:{projectId}/FinancialProgress")]
@@ -63,12 +44,12 @@ namespace CrowDoAPI.Controllers
         }
 
         // GET api/projects
-        [HttpGet]
-        public void DeadlineCheck()
-        {
+        //[HttpGet]
+        //public void DeadlineCheck()
+        //{
 
-            projectService_.DeadlineCheck();
-        }
+        //    projectService_.DeadlineCheck();
+        //}
 
         // GET api/projects
         [HttpGet("/IReportingService/Users/Projects/TopCreators")]
@@ -143,32 +124,7 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        //[HttpGet("/IProjectService/Project/SearchByText")]
-        //public ActionResult<Result<List<Project>>> GetSearchByText(Search search)
-        //{
-        //    var result1 = projectService_.SearchByYear(search.Year);
-        //    var result2 = projectService_.SearchByCreator(search.Name);
-        //    var result3 = projectService_.SearchByCategory(search.Category);
-        //    if (result1.Data != null && result2.Data != null)
-        //    { var r = result1.Data.Union(result2.Data).ToList();
-        //        if (r != null) { return r; }
-        //    }
-
-        //    if (result1.Data != null && result3.Data != null)
-        //    { var r1 = result1.Data.Union(result3.Data).ToList();
-        //        if (r1 != null) { var result = r1;  }
-               
-        //    }
-
-        //    if (result2.Data != null && result3.Data != null)
-        //    {
-        //        var r2 = result1.Data.Union(result2.Data).ToList();
-        //        if (r2 != null) { var result = r2;  }
-        //    }
-
-           
-        //    return result;
-        //}
+       
 
         [HttpGet("/IProjectService/Project/PendingProjects")]
         public ActionResult<Result<List<Project>>> GetPendingProjects()

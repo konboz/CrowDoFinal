@@ -29,11 +29,11 @@ namespace CrowDoAPI
             //services.AddDbContext<CrowdoDbContext>(options =>
             // options.UseSqlServer(@"Server=localhost; Database=CrowDo; Trusted_Connection = True; ConnectRetryCount = 0;"));
 
-            services.AddTransient<IDashboardService, DashboardService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IProjectService, ProjectService>();
-            services.AddTransient<ICentralService, CentralService>();
-            services.AddTransient<IReportingService, ReportingService>();
+            services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ICentralService, CentralService>();
+            services.AddScoped<IReportingService, ReportingService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerDocument();
@@ -52,10 +52,11 @@ namespace CrowDoAPI
                 app.UseHsts();
             }
 
-            app.UseSwagger();
-            app.UseSwaggerUi3();
+
 
             app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUi3();
             app.UseMvc();
         }
     }

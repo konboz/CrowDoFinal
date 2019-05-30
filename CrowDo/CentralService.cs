@@ -25,7 +25,7 @@ namespace CrowDo
                 if (response.ErrorCode != 0)
                 {
                     result.ErrorCode = 7;
-                    result.ErrorText = "Project not saved!Why";
+                    result.ErrorText = "Project not saved!";
                     return result;
                 }
             }
