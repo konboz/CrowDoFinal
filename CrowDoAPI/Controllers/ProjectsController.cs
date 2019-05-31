@@ -127,7 +127,22 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
+        [HttpGet("/Projects/Reports/{filename}/SaveMonthlyReport")]
+        public ActionResult<Result<bool>> MonthlyReport(string filename)
+        {
+            var result = reportingService_.MonthlyReport(filename);
 
+            return result;
+        }
+
+        [HttpGet("/Projects/Reports/{filename}/SaveWeeklyReport")]
+        public ActionResult<Result<bool>> WeeklyReport(string filename)
+        {
+            var result = reportingService_.WeeklyReport(filename);
+
+            return result;
+        }
+        
         // POST api/projects/5
 
         [HttpPost("/Operations/ImportUsers")]
