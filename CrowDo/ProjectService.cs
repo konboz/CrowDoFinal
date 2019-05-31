@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,14 +42,14 @@ namespace CrowDo
 
             var backer = context.Set<User>()
                 .SingleOrDefault(c => c.UserId == userId);
-                
+
             var package = context.Set<RewardPackage>()
                 .SingleOrDefault(c => c.RewardPackageId == rewardPackageId);
 
             var project = context.Set<Project>()
                 .Include(p => p.RewardPackages)
                 .SingleOrDefault(p => p.ProjectId == projectId);
-              
+
             if (backer == null)
             {
                 result.ErrorCode = 20;
@@ -92,7 +93,7 @@ namespace CrowDo
                 ProjectId = projectId
             };
             context.Add(backerReward);
-         
+
             if (context.SaveChanges() < 1)
             {
                 result.ErrorCode = 7;
@@ -123,7 +124,7 @@ namespace CrowDo
 
             result.Data = projectList;
             return result;
-        } 
+        }
 
         public Result<List<Project>> GetPendingProjects()
         {
@@ -174,7 +175,7 @@ namespace CrowDo
 
             result.Data = project;
             return result;
-        } 
+        }
 
         public bool IsValidEmail(string email)
         {
@@ -279,7 +280,7 @@ namespace CrowDo
                 Data = projectList
             };
             return result;
-           
+
         }
 
         public Result<List<Project>> SearchByCreator(string name)
@@ -290,7 +291,7 @@ namespace CrowDo
                 .SingleOrDefault(p => p.Email == name);
 
             var result = new Result<List<Project>>();
-            
+
             if (creator == null)
             {
                 result.ErrorCode = 24;
@@ -299,22 +300,6 @@ namespace CrowDo
             }
 
             result.Data = creator.CreatedProjects;
-            return result;
-        }
-
-        public Result<List<Project>> SearchByText(string text)
-        {
-            var context = new CrowDoDbContext();
-            var projectList = context.Set<Project>()
-                //.Include(p => p.RewardPackages)
-                .Where(p => p.ProjectName.Contains(text))
-                .Where(p => p.IsAvailable == true)
-                .ToList();
-
-            var result = new Result<List<Project>>
-            {
-                Data = projectList
-            };
             return result;
         }
 
@@ -333,6 +318,41 @@ namespace CrowDo
             };
             return result;
         }
+
+        public Result<List<Project>> SearchByText(string name,string category)
+        {
+
+            var context = new CrowDoDbContext();
+            //var projectList = context.Set<Project>()
+            //    //.Include(p => p.RewardPackages)
+            //    .Where(p => p.ProjectName.Contains(text))
+            //    .Where(p => p.IsAvailable == true)
+            //    .ToList();
+            // var importData = JsonConvert.DeserializeObject<List<string>>(text);
+
+
+
+            var projectList = context.Set<Project>().Where(p => p.ProjectName.Contains(name))
+                .Where(c => c.ProjectCategory.Contains(category)).ToList();
+
+
+
+
+            var result = new Result<List<Project>>
+            {
+                Data = projectList
+            };
+
+            if (result.Data == null)
+            {
+                result.ErrorCode = 22;
+                result.ErrorText = "Poject not Found!";
+            }
+
+
+            return result;
+        }
+
     }
 }
 

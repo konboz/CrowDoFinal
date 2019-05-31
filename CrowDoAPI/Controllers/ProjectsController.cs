@@ -100,10 +100,10 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpGet("/IProjectService/Project/SearchByText:{text}")]
-        public ActionResult<Result<List<Project>>> GetProjectByText(string text)
+        [HttpGet("/IProjectService/Project/SearchByText{name}/{category}")]
+        public ActionResult<Result<List<Project>>> GetProjectByText(string name, string category)
         {
-            var result = projectService_.SearchByText(text);
+            var result = projectService_.SearchByText(name,category);
             return result;
         }
 
@@ -135,7 +135,7 @@ namespace CrowDoAPI.Controllers
         }
         // POST api/projects
 
-        [HttpPost("/IProjectService/Users/UsersProject/UsersIdfund/")]
+        [HttpPost("/IProjectService/Users/UsersProject/UsersId:{userId}/Fund/")]
         public ActionResult<Result<bool>> FundProject(int userId, int projectId, int rewardPackageId)
         {
             var result = projectService_.FundProject(userId, projectId
@@ -187,37 +187,45 @@ namespace CrowDoAPI.Controllers
 
         // POST api/values
         [HttpPost("/IDashBoardService/Users/UserId:{userId}/Project/ProjectId:{projectId}/AddRewardPackage")]
-        public void Post(int userId, int projectId, [FromBody] RewardPackageOptions reward)
+        public ActionResult<Result<bool>> Post(int userId, int projectId, [FromBody] RewardPackageOptions reward)
         {
 
-            dashboardService_.AddRewardPackage(userId, projectId, reward.PackageName,
-                reward.RewardName, reward.Price);
+            var result = dashboardService_.AddRewardPackage(userId, projectId, reward.PackageName,
+                 reward.RewardName, reward.Price);
+
+            return Ok(result);
 
         }
 
         [HttpPost("/IDashBoardService/Project/ProjectId:{projectId}/GiveMediafile")]
-        public void Post(int projectId, [FromBody] ProjectMediaOptions projectMedia)
+        public ActionResult<Result<bool>> Post(int projectId, [FromBody] ProjectMediaOptions projectMedia)
         {
 
-            dashboardService_.AddMultimediaFile(projectId, projectMedia.FileName);
+            var result = dashboardService_.AddMultimediaFile(projectId, projectMedia.FileName);
+
+            return result;
 
         }
 
         [HttpPost("/IDashBoardService/Project/ProjectId:{projectId}/EditProject")]
-        public void Post(int projectId, [FromBody] ProjectOptionsEdit project)
+        public ActionResult<Result<bool>> Post(int projectId, [FromBody] ProjectOptionsEdit project)
         {
 
-            dashboardService_.EditProject(projectId, project.ProjectName,
+            var result = dashboardService_.EditProject(projectId, project.ProjectName,
                 project.ProjectCategory, project.Description, project.ProjectGoal,
                 project.ExpirationDate, project.EstimatedDurationInMonths);
+
+            return result;
 
         }
 
         [HttpPost("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/StatusUpdate")]
-        public void Post(int userId, int projectId, [FromBody] StatusUpdateOptions update)
+        public ActionResult<Result<bool>> Post(int userId, int projectId, [FromBody] StatusUpdateOptions update)
         {
 
-            dashboardService_.StatusUpdate(userId, projectId, update.Text);
+            var result = dashboardService_.StatusUpdate(userId, projectId, update.Text);
+
+            return result;
 
         }
 

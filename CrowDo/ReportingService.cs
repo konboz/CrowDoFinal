@@ -46,7 +46,7 @@ namespace CrowDo
             var context = new CrowDoDbContext();
             var result = new Result<List<User>>();
 
-            var topCreators = context.Set<User>()
+            var topCreators = context.Set<User>().Where(u => u.CreatedProjectsCount > 0)
                 .OrderByDescending(u => u.CreatedProjectsCount)
                 .Take(20)
                 .ToList();

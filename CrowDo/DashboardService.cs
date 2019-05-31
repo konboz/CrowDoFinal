@@ -40,16 +40,22 @@ namespace CrowDo
             var result = new Result<bool>();
             var context = new CrowDoDbContext();
 
-            var rewardPackage = new RewardPackage()
-            {
-                PackageName = packageName,
-                RewardName = rewardName,
-                Price = price
-            };
+            
 
-            var project = context.Set<Project>()
-            .Where(c => c.ProjectId == projectId)
-            .SingleOrDefault();
+            var user = context.Set<User>()
+                .Include(u => u.CreatedProjects)
+                .SingleOrDefault(u => u.UserId == userId);
+
+            var project = context.Set<Project>().Include(p => p.RewardPackages)
+            .SingleOrDefault(c => c.ProjectId == projectId);
+
+            if (!user.CreatedProjects.Contains(project))
+            {
+                result.ErrorCode = 15;
+                result.ErrorText = "You don't have creator rights for this project";
+
+                return result;
+            }
 
             if (project == null)
             {
@@ -86,12 +92,17 @@ namespace CrowDo
                 return result;
             }
 
-            context.Add(rewardPackage);
+            // context
 
-            project.RewardPackages = new List<RewardPackage>
+            project.RewardPackages.Add(new RewardPackage()
             {
-                rewardPackage
-            };
+                PackageName = packageName,
+                RewardName = rewardName,
+                Price = price
+            });
+            //{
+            //    rewardPackage
+            //};
 
             if (context.SaveChanges() < 1)
             {
@@ -100,6 +111,7 @@ namespace CrowDo
                 return result;
             }
 
+            result.Data = true;
             return result;
 
         }
@@ -113,23 +125,32 @@ namespace CrowDo
             var project = context.Set<Project>().SingleOrDefault(p => p.ProjectId == projectId);
             var user = context.Set<User>().SingleOrDefault(u => u.UserId == userId);
 
+            if (!user.CreatedProjects.Contains(project))
+            {
+                result.ErrorCode = 15;
+                result.ErrorText = "You don't have creator rights for this project";
+
+                return result;
+            }
+            
+
             user.CreatedProjects.Remove(project);
 
 
-            context.Remove(project);
+            // context.Remove(project);
 
-
+            project.IsAvailable = false;
             user.CreatedProjectsCount--;
 
             if (context.SaveChanges() < 1)  //** vaalidation for Savechanges : registration is ok or not
             {
                 result.ErrorCode = 7;
-                result.ErrorText = "No save";
+                result.ErrorText = "An error occurred while saving data";
                 return result;
             }
 
 
-
+            result.Data = true;
             return result;
 
         }
@@ -139,8 +160,10 @@ namespace CrowDo
             var result = new Result<bool>();
             var context = new CrowDoDbContext();
 
-            var reward = context.Set<RewardPackage>().SingleOrDefault(u => u.RewardPackageId == rewardPackageId);
-            var project = context.Set<Project>().SingleOrDefault(p => p.ProjectId == projectId);
+            var reward = context.Set<RewardPackage>()
+                .SingleOrDefault(u => u.RewardPackageId == rewardPackageId);
+            var project = context.Set<Project>()
+                .SingleOrDefault(p => p.ProjectId == projectId);
 
             project.RewardPackages.Remove(reward);
             context.Remove(reward);
@@ -148,12 +171,11 @@ namespace CrowDo
             if (context.SaveChanges() < 1)  //** vaalidation for Savechanges : registration is ok or not
             {
                 result.ErrorCode = 7;
-                result.ErrorText = "No save";
+                result.ErrorText = "An error occurred while saving data";
                 return result;
             }
 
-
-
+            result.Data = true;
             return result;
         }
 
@@ -184,7 +206,7 @@ namespace CrowDo
                 return result;
             }
 
-
+            result.Data = true;
             return result;
         }
 
@@ -225,7 +247,7 @@ namespace CrowDo
             if (context.SaveChanges() < 1)  //** vaalidation for Savechanges : registration is ok or not
             {
                 result.ErrorCode = 7;
-                result.ErrorText = "No save";
+                result.ErrorText = "An error occurred while saving data";
                 return result;
             }
 
