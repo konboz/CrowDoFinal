@@ -258,44 +258,49 @@ namespace CrowDo
             return result;
         }
 
-        public Result<List<Project>> SearchByText(string text)
+        public Result<List<Project>> SearchByText(string name, string category)
         {
-            var context = new CrowDoDbContext();
-            var result = new Result<List<Project>>();
+            //var context = new CrowDoDbContext();
 
-            var projectList = context.Set<Project>()
-                .Where(p => p.ProjectCategory.Contains(text))
-                .Where(p => p.ProjectName.Contains(text))
-                .Where(p => p.IsAvailable == true)
-                .ToList();
-            //var finalProjectList = new List<Project>();
+            //var projectList = context.Set<Project>()
+            //    .Where(p => p.ProjectName.Contains(name))
+            //    .Where(c => c.ProjectCategory.Contains(category)).ToList();
 
-            if (projectList == null)
-            {
-                //foreach (Project p in projectList)
-                //{
-                //    if (text.Contains(p.ProjectName))
-                //    {
-                //        finalProjectList.Add(p);
-                //    }
-                //}
+            //var result = new Result<List<Project>>
+            //{
+            //    Data = projectList
+            //};
 
-                //if (finalProjectList == null)
-                //{
-                //    result.Data = projectList;
+            //return result;
 
-                //    return result;
-                //}
+                var context = new CrowDoDbContext();
+                //var projectList = context.Set<Project>()
+                //    //.Include(p => p.RewardPackages)
+                //    .Where(p => p.ProjectName.Contains(text))
+                //    .Where(p => p.IsAvailable == true)
+                //    .ToList();
+                // var importData = JsonConvert.DeserializeObject<List<string>>(text);
 
-                result.ErrorCode = 22;
-                result.ErrorText = "No project found";
 
-                return result;
-            }
+
+                var projectList = context.Set<Project>().Where(p => p.ProjectName.Contains(name))
+                    .Where(c => c.ProjectCategory.Contains(category)).ToList();
+
+                var result = new Result<List<Project>>
+                {
+                    Data = projectList
+                };
+
+                if (result.Data == null)
+                {
+                    result.ErrorCode = 22;
+                    result.ErrorText = "Poject not Found!";
+                }
 
             result.Data = projectList;
-            return result;
-        }
+                return result;
+            }
+        
 
         public Result<List<Project>> SearchByCategory(string category)
         {
