@@ -11,179 +11,269 @@ namespace CrowDoAPI.Controllers
     [ApiController]
     public class ProjectsController : ControllerBase
     {
-        // GET api/projects
-        [HttpGet]
-        public void DeadlineCheck()
+
+        private IDashboardService dashboardService_;
+        private IUserService userService_;
+        private IProjectService projectService_;
+        private IReportingService reportingService_;
+        private ICentralService centralService_;
+
+
+
+        public ProjectsController(IDashboardService dashboardService_, IUserService userService_,
+            IProjectService projectService_, IReportingService reportingService_, ICentralService centralService_)
         {
-            var projectService = new ProjectService();
-            projectService.DeadlineCheck();
+            this.dashboardService_ = dashboardService_;
+            this.userService_ = userService_;
+            this.projectService_ = projectService_;
+            this.reportingService_ = reportingService_;
+            this.centralService_ = centralService_;
+
+        }
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..
+
+        
+
+
+        // GET api/values
+        [HttpGet("/DashBoard/Projects/projectId:{projectId}/FinancialProgress")]
+        public IActionResult Get(int projectId)
+        {
+            var result = dashboardService_.GetFinancialProgress(projectId);
+            return Ok(result.Data);
         }
 
         // GET api/projects
-        [HttpGet("topCreators")]
+        //[HttpGet]
+        //public void DeadlineCheck()
+        //{
+
+        //    projectService_.DeadlineCheck();
+        //}
+
+        // GET api/projects
+        [HttpGet("/IReportingService/Users/Projects/TopCreators")]
         public ActionResult<Result<List<User>>> GetTopCreators()
         {
-            var reportingService = new ReportingService();
-            return reportingService.GetTopCreators();
+            var result = reportingService_.GetTopCreators();
+            return result;
         }
 
-        [HttpGet("recentProjects")]
+        [HttpGet("/IReportingService/Users/Projects/RecentProjects")]
         public ActionResult<Result<List<Project>>> GetRecentProjects()
         {
-            var reportingService = new ReportingService();
-            return reportingService.GetRecentProjects();
+            var result = reportingService_.GetRecentProjects();
+            return result;
         }
 
-        [HttpGet("popularProjects")]
+        [HttpGet("/IReportingService/Users/Projects/PopularProjects")]
         public ActionResult<Result<List<Project>>> GetPopularProjects()
         {
-            var reportingService = new ReportingService();
-            return reportingService.GetPopularProjects();
+            var result = reportingService_.GetPopularProjects();
+            return result;
         }
 
-        [HttpGet("SuccessfulProjects")]
+        [HttpGet("/IProjectService/Users/Projects/SuccessfulProjects")]
 
         public ActionResult<Result<List<Project>>> GetFundedProjects()
         {
 
-            var projectService = new ProjectService();
+            var result = projectService_.GetFundedProjects();
 
-            return projectService.GetFundedProjects();
+            return result;
 
         }
 
-        // GET api/projects/5
-        [HttpGet("{projectId}")]
+        // GET 
+        [HttpGet("/IProjectService/Users/Projects/ProjectId:{projectId}/ProjectDetails")]
         public ActionResult<Result<Project>> GetProjectDetails(int projectId)
         {
-            var projectService = new ProjectService();
-
-            return projectService.GetProjectDetails(projectId);
+            var result = projectService_.GetProjectDetails(projectId);
+            return result;
         }
 
         // GET api/projects/5
-        [HttpGet("searchByCreator/{creatorName}")]
+        [HttpGet("/IProjectService/User/UserName:{CreatorName}/Projects/SearchByCreator")]
         public ActionResult<Result<List<Project>>> GetProjectByCreator(string creatorName)
         {
-            var projectService = new ProjectService();
-           
-            return projectService.SearchByCreator(creatorName);
+            var result = projectService_.SearchByCreator(creatorName);
+            return result;
         }
 
-        [HttpGet("searchByText/{text}")]
-        public ActionResult<Result<List<Project>>> GetProjectByText(string text)
+        [HttpGet("/IProjectService/Project/SearchByText{name}/{category}")]
+        public ActionResult<Result<List<Project>>> GetProjectByText(string name, string category)
         {
-            var projectService = new ProjectService();
-       
-            return projectService.SearchByText(text);
+            var result = projectService_.SearchByText(name,category);
+            return result;
         }
 
-        // GET api/projects/5
-        [HttpGet("searchByCategory/{category}")]
+        // GET 
+        [HttpGet("/IProjectService/Project/SearchByCategory:{category}")]
         public ActionResult<Result<List<Project>>> GetProjectByCategory(string category)
         {
-            var projectService = new ProjectService();
-           
-            return projectService.SearchByCategory(category);
+            var result = projectService_.SearchByCategory(category);
+            return result;
         }
 
-        // GET api/projects/5
-        [HttpGet("searchByYear/{year}")]
+        // GET 
+        [HttpGet("/IProjectService/Project/SearchByYear:{year}")]
         public ActionResult<Result<List<Project>>> GetProjectByYear(int year)
         {
-            var projectService = new ProjectService();
-     
-            return projectService.SearchByYear(year);
+            var result = projectService_.SearchByYear(year);
+
+            return result;
         }
 
-        [HttpGet("pendingProjects")]
+       
+
+        [HttpGet("/IProjectService/Project/PendingProjects")]
         public ActionResult<Result<List<Project>>> GetPendingProjects()
         {
-            var projectService = new ProjectService();
+            var result = projectService_.GetPendingProjects();
 
-            return projectService.GetPendingProjects();
+            return result;
         }
-
-        public struct Package
-        {
-            public string name;
-            public string category;
-            public string description;
-            public decimal projectGoal;
-            public DateTime expirationInMonths;
-            public DateTime creationDate;
-            public int estimatedDurationInMonths;
-        }
-
-        //public struct Packet
-        //{
-
-        //    public int projectId;
-        //    public int rewardPackageId;
-        //}
-
         // POST api/projects
 
-        [HttpPost("fund/{userId}")]
+        [HttpPost("/IProjectService/Users/UsersProject/UsersId:{userId}/Fund/")]
         public ActionResult<Result<bool>> FundProject(int userId, int projectId, int rewardPackageId)
         {
-            var projectService = new ProjectService();
+            var result = projectService_.FundProject(userId, projectId
 
-            return projectService.FundProject(userId, projectId
             , rewardPackageId);
-        }
-        
-        // POST api/projects/5
-        [HttpPost("publish/{creatorEmail}")]
-        public ActionResult<Result<Project>> PostNewProject(string creatorEmail, [FromBody] Package package)
-        {
-            var projectService = new ProjectService();
 
-            return projectService.PublishProject(creatorEmail, package.name
+            return result;
+        }
+
+
+        [HttpPost("/ICentralService/ImportUsers")]
+        public ActionResult<Result<bool>> ImportUsers([FromBody] ProjectMediaOptions options)
+        {
+            var result = centralService_.ImportUsers(options.FileName);
+
+            return result;
+        }
+
+        [HttpPost("/ICentralService/ImportProjects")]
+        public ActionResult<Result<bool>> ImportProjects([FromBody] ProjectMediaOptions options)
+        {
+            var result = centralService_.ImportProject(options.FileName);
+
+            return result;
+        }
+
+        // POST api/projects/5
+        [HttpPost("/IProjectService/Users/UserEmail:{creatorEmail}/PublihProject")]
+        public ActionResult<Result<Project>> PostNewProject(string creatorEmail, [FromBody] ServiceProjectOptionPublish package)
+        {
+            var result = projectService_.PublishProject(creatorEmail, package.name
             , package.category, package.description, package.projectGoal
             , package.expirationInMonths, package.creationDate, package.estimatedDurationInMonths);
 
+            return result;
+
         }
 
         // POST api/projects/5
-        [HttpPost("addPackage/{userId}/{projectId}")]
-        public ActionResult<Result<bool>> AddRewardPackage(int userId, int projectId, [FromBody] RewardPackage package)
-        {
-            var dashboardService = new DashboardService();
+        //[HttpPost("addPackage/{userId}/{projectId}")]
+        //public ActionResult<Result<bool>> AddRewardPackage(int userId, int projectId, [FromBody] RewardPackage package)
+        //{
+        //    var dashboardService = new DashboardService();
 
-            return dashboardService.AddRewardPackage(userId, projectId, package.PackageName, package.RewardName, package.Price);
+        //    return dashboardService.AddRewardPackage(userId, projectId, package.PackageName, package.RewardName, package.Price);
+        //}
+
+
+
+        // POST api/values
+        [HttpPost("/IDashBoardService/Users/UserId:{userId}/Project/ProjectId:{projectId}/AddRewardPackage")]
+        public ActionResult<Result<bool>> Post(int userId, int projectId, [FromBody] RewardPackageOptions reward)
+        {
+
+            var result = dashboardService_.AddRewardPackage(userId, projectId, reward.PackageName,
+                 reward.RewardName, reward.Price);
+
+            return Ok(result);
+
         }
 
-        public struct Edits
+        [HttpPost("/IDashBoardService/Project/ProjectId:{projectId}/GiveMediafile")]
+        public ActionResult<Result<bool>> Post(int projectId, [FromBody] ProjectMediaOptions projectMedia)
         {
-            public string Name;
-            public string Address;
-            public DateTime BirthDate;
+
+            var result = dashboardService_.AddMultimediaFile(projectId, projectMedia.FileName);
+
+            return result;
+
         }
-        
+
+        [HttpPost("/IDashBoardService/Project/ProjectId:{projectId}/EditProject")]
+        public ActionResult<Result<bool>> Post(int projectId, [FromBody] ProjectOptionsEdit project)
+        {
+
+            var result = dashboardService_.EditProject(projectId, project.ProjectName,
+                project.ProjectCategory, project.Description, project.ProjectGoal,
+                project.ExpirationDate, project.EstimatedDurationInMonths);
+
+            return result;
+
+        }
+
+        [HttpPost("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/StatusUpdate")]
+        public ActionResult<Result<bool>> Post(int userId, int projectId, [FromBody] StatusUpdateOptions update)
+        {
+
+            var result = dashboardService_.StatusUpdate(userId, projectId, update.Text);
+
+            return result;
+
+        }
+
+
         // POST api/projects
-        [HttpPost("/api/users/create/{email}")]
-        public ActionResult<Result<User>> CreateUser(string email, [FromBody] Edits edit)
+        [HttpPost("/IUserService/Users/Register")]
+        public ActionResult<Result<User>> CreateUser([FromBody] UsersServiceOptionsRegister edit)
         {
-            var userService = new UserService();
-            return userService.Create(email, edit.Name, edit.Address, edit.BirthDate);
-        }
+            var result = userService_.Create(edit.Email, edit.Name, edit.Address, edit.BirthDate);
 
+            return result;
+        }
 
         // PUT api/projects/5
-        [HttpPut("/api/users/update/{email}")]
-        public ActionResult<Result<bool>> EditUser(string email, [FromBody] Edits edit)
+        [HttpPut("/IUserService/Users/UserEmail:{userEmail}/EditAccount")]
+        public ActionResult<Result<bool>> EditUser(string userEmail, [FromBody] UserServiceOptionsEditAccount edit)
         {
-            var userService = new UserService();
-            return userService.Edit(email, edit.Name, edit.Address, edit.BirthDate);
+            var result = userService_.Edit(userEmail, edit.Name, edit.Address, edit.BirthDate);
+            return result;
         }
 
         // DELETE api/projects/5
-        [HttpDelete("/api/users/delete/{email}")]
-        public ActionResult<Result<bool>> DeleteUser(string email)
+        [HttpDelete("/IUserService/Users/UserEmail:{userEmail}/DeleteAccount")]
+        public ActionResult<Result<bool>> DeleteUser(string userEmail)
         {
-            var userService = new UserService();
-            return userService.Delete(email);
+            var result = userService_.Delete(userEmail);
+            return result;
+
+        }
+
+
+        [HttpDelete("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/RewardPackages/PewardPackageId:{rewardPackageId}/Delete")]
+        public ActionResult<Result<bool>> Delete(int userId, int projectId, int rewardPackageId)
+        {
+
+            var result = dashboardService_.DeleteRewardPackage(userId, projectId, rewardPackageId);
+            return result;
+
+        }
+
+        [HttpDelete("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/DeleteProject")]
+        public ActionResult<Result<bool>> Delete(int userId, int projectId)
+        {
+
+            var result = dashboardService_.DeleteProject(userId, projectId);
+
+            return result;
+
 
         }
     }

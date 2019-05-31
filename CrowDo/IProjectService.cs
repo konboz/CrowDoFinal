@@ -12,9 +12,9 @@ namespace CrowDo
             , string description, decimal projectGoal, DateTime creationDate, DateTime monthDuration
             , int estimatedMonthDuration);
 
-        //Result<Project> SearchProject(string text);
+       
 
-        Result<List<Project>> SearchByText(string text);
+        Result<List<Project>> SearchByText(string name, string category);
 
         Result<List<Project>> SearchByCategory(string category);
 
