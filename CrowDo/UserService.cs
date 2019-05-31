@@ -125,6 +125,12 @@ namespace CrowDo
                 return result;
             }
 
+            if (updatedUser == null)
+            {
+                result.ErrorCode = 8;
+                result.ErrorText = "No user found";
+                return result;
+            }
             updatedUser.Name = newName;
             updatedUser.Address = newAddress;
             updatedUser.BirthDate = newBirthDate;

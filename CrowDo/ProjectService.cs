@@ -280,7 +280,6 @@ namespace CrowDo
             return result;
         }
 
-
         public Result<List<Project>> SearchByCategory(string category)
         {
             var context = new CrowDoDbContext();
@@ -322,23 +321,7 @@ namespace CrowDo
             result.Data = creator.CreatedProjects;
             return result;
         }
-
-        //public Result<List<Project>> SearchByText(string text)
-        //{
-        //    var context = new CrowDoDbContext();
-        //    var projectList = context.Set<Project>()
-        //        //.Include(p => p.RewardPackages)
-        //        .Where(p => p.ProjectName.Contains(text))
-        //        .Where(p => p.IsAvailable == true)
-        //        .ToList();
-
-        //    var result = new Result<List<Project>>
-        //    {
-        //        Data = projectList
-        //    };
-        //    return result;
-        //}
-
+     
         public Result<List<Project>> SearchByYear(int year)
         {
             var context = new CrowDoDbContext();

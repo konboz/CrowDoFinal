@@ -36,15 +36,15 @@ namespace CrowDo
             //dashboard.AddRewardPackage(7, 3, "Tier 3", "Signed CD", 150m);
             //dashboard.AddRewardPackage(7, 3, "Tier 4", "Signed Vinyl", 250m);
 
-            //projectService = new ProjectService();
+            //var projectService = new ProjectService();
 
-            //projectService.FundProject(1, 1, 2);
-            //projectService.FundProject(2, 1, 3);
+            //projectService.FundProject(1, 2, 2);
+            //projectService.FundProject(2, 2, 3);
             //projectService.FundProject(4, 3, 6);
             //projectService.FundProject(5, 3, 5);
-            //projectService.FundProject(7, 1, 3);
+            //projectService.FundProject(7, 2, 3);
             //projectService.FundProject(6, 3, 7);
-            //projectService.FundProject(6, 1, 3);
+            //projectService.FundProject(6, 2, 3);
             //projectService.FundProject(6, 3, 5);
 
             ////var reportingService = new ReportingService();

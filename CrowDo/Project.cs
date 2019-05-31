@@ -33,13 +33,6 @@ namespace CrowDo
 
         public DateTime EstimatedDurationInMonths { get; set; }
 
-        
-        //public User Creator { get; set; } //???//
-
-        //public List<User> Backers { get; set; } //???//
-
-        //public List<ProjectReward> ProjectRewards { get; set; }
-
         public string StatusUpdate { get; set; }
 
         public List<RewardPackage> RewardPackages { get; set; }
@@ -54,17 +47,7 @@ namespace CrowDo
         {
             List<RewardPackage> RewardPackages = new List<RewardPackage>();
             List<LinkingTable> LinkingTables = new List<LinkingTable>();
-            //Visits = 0;
         }
-
-        //public Project(string projectName, ProjectCategory projectCategory, decimal projectGoal) //Boroume na to kanoume xwris constructor opws eipe o pnevmatikos
-        //{
-        //    ProjectName = projectName;
-        //    ProjectCategory = projectCategory;
-        //    ProjectGoal = projectGoal;
-        //}
-
-
     }
 
 }
