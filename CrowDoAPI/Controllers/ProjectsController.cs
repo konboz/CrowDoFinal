@@ -416,10 +416,10 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpGet("/IProjectService/Project/SearchByText:{text}")]
-        public ActionResult<Result<List<Project>>> GetProjectByText(string text)
+        [HttpGet("/IProjectService/Project/SearchByText{name}/{category}")]
+        public ActionResult<Result<List<Project>>> GetProjectByText(string name, string category)
         {
-            var result = projectService_.SearchByText(text);
+            var result = projectService_.SearchByText(name, category);
             return result;
         }
 
