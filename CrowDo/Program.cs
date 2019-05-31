@@ -18,9 +18,12 @@ namespace CrowDo
 
             //var projectService = new ProjectService();
 
-            //projectService.PublishProject("nikos@gmail.com", "Camera Tripod", "Arts", "A camera tripod idea", 15000m, 6, 12);
-            //projectService.PublishProject("stavros@gmail.com", "Food dispenser", "Food", "Don't even know, just give me money", 5000m, 8, 16);
-            //projectService.PublishProject("Xristina@gmail.com", "Music Album", "Arts, Music", "Music album", 45000m, 14, 24);
+            //projectService.PublishProject("nikos@gmail.com", "Camera Tripod", "Arts", "A camera tripod idea"
+            //    , 15000m, new DateTime(2019, 05, 20), new DateTime(2019, 11, 10), 12);
+            //projectService.PublishProject("stavros@gmail.com", "Food dispenser", "Food", "Don't even know, just give me money"
+            //    , 5000m, new DateTime(2018, 12, 21), new DateTime(2019, 07, 21), 16);
+            //projectService.PublishProject("Xristina@gmail.com", "Music Album", "Arts, Music", "Music album"
+            //    , 45000m, new DateTime(2017, 06, 21), new DateTime(2018, 05, 21), 24);
 
             //var dashboard = new DashboardService();
 
@@ -32,7 +35,7 @@ namespace CrowDo
             //dashboard.AddRewardPackage(7, 3, "Tier 3", "Signed CD", 150m);
             //dashboard.AddRewardPackage(7, 3, "Tier 4", "Signed Vinyl", 250m);
 
-            //projectService = new ProjectService();
+            //var projectService = new ProjectService();
 
             //projectService.FundProject(1, 1, 2);
             //projectService.FundProject(2, 1, 3);
@@ -48,7 +51,7 @@ namespace CrowDo
             //reportingService.MonthlyReport("monthly.xlsx");
             //reportingService.MonthlyReport("weekly.xlsx");
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }

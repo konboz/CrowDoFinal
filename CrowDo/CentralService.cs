@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CrowDo
 {
-    class CentralService : ICentralService
+    public class CentralService : ICentralService
     {
         public Result<bool> ImportProject(string fileName)
         {
@@ -25,7 +25,7 @@ namespace CrowDo
                 if (response.ErrorCode != 0)
                 {
                     result.ErrorCode = 7;
-                    result.ErrorText = "Project not saved!Why";
+                    result.ErrorText = "Project not saved!";
                     return result;
                 }
             }
