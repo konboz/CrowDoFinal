@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CrowDo.Migrations
 {
     [DbContext(typeof(CrowDoDbContext))]
-    [Migration("20190529203701_version5")]
+    [Migration("20190531075202_version5")]
     partial class version5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
