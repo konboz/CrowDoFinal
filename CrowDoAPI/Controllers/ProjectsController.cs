@@ -8,6 +8,7 @@ using CrowDo;
 namespace CrowDoAPI.Controllers
 {
     
+
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectsController : ControllerBase
@@ -31,7 +32,7 @@ namespace CrowDoAPI.Controllers
             this.centralService_ = centralService_;
 
         }
-       
+        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>..
 
 
         //GET api/projects
@@ -45,28 +46,28 @@ namespace CrowDoAPI.Controllers
 
         //GET api/projects
 
-        [HttpGet("/IReportingService/Users/Projects/RecentProjects")]
+        [HttpGet("/Reports/Projects/RecentProjects")]
         public ActionResult<Result<List<Project>>> GetRecentProjects()
         {
             var result = reportingService_.GetRecentProjects();
             return result;
         }
 
-        [HttpGet("/IReportingService/Users/Projects/PopularProjects")]
+        [HttpGet("/Reports/Projects/PopularProjects")]
         public ActionResult<Result<List<Project>>> GetPopularProjects()
         {
             var result = reportingService_.GetPopularProjects();
             return result;
         }
 
-        [HttpGet("/IProjectService/Users/Projects/SuccessfulProjects")]
+        [HttpGet("/Projects/SuccessfulProjects")]
         public ActionResult<Result<List<Project>>> GetFundedProjects()
         {
             var result = projectService_.GetFundedProjects();
             return result;
         }
 
-        [HttpGet("/IProjectService/Project/PendingProjects")]
+        [HttpGet("/Projects/PendingProjects")]
         public ActionResult<Result<List<Project>>> GetPendingProjects()
         {
             var result = projectService_.GetPendingProjects();
@@ -74,7 +75,7 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpGet("/IReportingService/Users/Projects/TopCreators")]
+        [HttpGet("/Reports/Projects/TopCreators")]
         public ActionResult<Result<List<User>>> GetTopCreators()
         {
             var result = reportingService_.GetTopCreators();
@@ -83,42 +84,42 @@ namespace CrowDoAPI.Controllers
 
         // GET api/projects/5
 
-        [HttpGet("/IProjectService/Users/Projects/ProjectId:{projectId}/ProjectDetails")]
+        [HttpGet("/Projects/ProjectId:{projectId}/ProjectDetails")]
         public ActionResult<Result<Project>> GetProjectDetails(int projectId)
         {
             var result = projectService_.GetProjectDetails(projectId);
             return result;
         }
 
-        [HttpGet("/IDashBoardService/Projects/projectId:{projectId}/FinancialProgress")]
+        [HttpGet("/DashBoard/Projects/projectId:{projectId}/FinancialProgress")]
         public IActionResult Get(int projectId)
         {
             var result = dashboardService_.GetFinancialProgress(projectId);
             return Ok(result.Data);
         }
 
-        [HttpGet("/IProjectService/User/UserName:{email}/Projects/SearchByCreator")]
+        [HttpGet("/Project/User/UserEmail:{email}/Projects/SearchByCreator")]
         public ActionResult<Result<List<Project>>> GetProjectByCreator(string email)
         {
             var result = projectService_.SearchByCreator(email);
             return result;
         }
 
-        [HttpGet("/IProjectService/Project/SearchByText{name}/{category}")]
+        [HttpGet("/Projects/SearchByText{name}/{category}")]
         public ActionResult<Result<List<Project>>> GetProjectByText(string name, string category)
         {
             var result = projectService_.SearchByText(name, category);
             return result;
         }
 
-        [HttpGet("/IProjectService/Project/SearchByCategory:{category}")]
+        [HttpGet("/Projects/SearchByCategory:{category}")]
         public ActionResult<Result<List<Project>>> GetProjectByCategory(string category)
         {
             var result = projectService_.SearchByCategory(category);
             return result;
         }
 
-        [HttpGet("/IProjectService/Project/SearchByYear:{year}")]
+        [HttpGet("/Projects/SearchByYear:{year}")]
         public ActionResult<Result<List<Project>>> GetProjectByYear(int year)
         {
             var result = projectService_.SearchByYear(year);
@@ -126,25 +127,10 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpGet("/Projects/Reports/{filename}/save")]
-        public ActionResult<Result<bool>> MonthlyReport(string filename)
-        {
-            var result = reportingService_.MonthlyReport(filename);
-
-            return result;
-        }
-
-        [HttpGet("/Projects/Reports/{filename}/save")]
-        public ActionResult<Result<bool>> WeeklyReport(string filename)
-        {
-            var result = reportingService_.WeeklyReport(filename);
-
-            return result;
-        }
 
         // POST api/projects/5
 
-        [HttpPost("/ICentralService/ImportUsers")]
+        [HttpPost("/Operations/ImportUsers")]
         public ActionResult<Result<bool>> ImportUsers([FromBody] ProjectMediaOptions options)
         {
             var result = centralService_.ImportUsers(options.FileName);
@@ -152,7 +138,7 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpPost("/ICentralService/ImportProjects")]
+        [HttpPost("/Operations/ImportProjects")]
         public ActionResult<Result<bool>> ImportProjects([FromBody] ProjectMediaOptions options)
         {
             var result = centralService_.ImportProject(options.FileName);
@@ -160,7 +146,7 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpPost("/IProjectService/Users/{userId}/Projects/{projectId}/{rewardPackageId}/fund")]
+        [HttpPost("/Projects/Users/{userId}/Projects/{projectId}/{rewardPackageId}/fund")]
         public ActionResult<Result<bool>> FundProject(int userId, int projectId, int rewardPackageId)
         {
             var result = projectService_.FundProject(userId, projectId
@@ -169,7 +155,7 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpPost("/IProjectService/Users/UserEmail:{creatorEmail}/PublishProject")]
+        [HttpPost("/Projects/Users/UserEmail:{creatorEmail}/PublishProject")]
         public ActionResult<Result<Project>> PostNewProject(string creatorEmail, [FromBody] ServiceProjectOptionPublish package)
         {
             var result = projectService_.PublishProject(creatorEmail, package.name
@@ -182,7 +168,7 @@ namespace CrowDoAPI.Controllers
 
         // POST api/Users/...
 
-        [HttpPost("/IDashBoardService/Users/UserId:{userId}/Project/ProjectId:{projectId}/AddRewardPackage")]
+        [HttpPost("/DashBoard/Users/UserId:{userId}/Project/ProjectId:{projectId}/AddRewardPackage")]
         public ActionResult<Result<bool>> Post(int userId, int projectId, [FromBody] RewardPackageOptions reward)
         {
 
@@ -192,7 +178,7 @@ namespace CrowDoAPI.Controllers
             return result;
         }
 
-        [HttpPost("/IDashBoardService/Users/UserId:{userId}/Project/ProjectId:{projectId}/GiveMediafile")]
+        [HttpPost("/DashBoard/Users/UserId:{userId}/Project/ProjectId:{projectId}/GiveMediafile")]
         public ActionResult<Result<bool>> Post(int userId, int projectId, [FromBody] ProjectMediaOptions projectMedia)
         {
             var result = dashboardService_.AddMultimediaFile(userId, projectId, projectMedia.FileName);
@@ -200,7 +186,7 @@ namespace CrowDoAPI.Controllers
             return result;
         }
         
-        [HttpPost("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/StatusUpdate")]
+        [HttpPost("/DashBoard/Users/UsersId:{userId}/Project/ProjectId:{projectId}/StatusUpdate")]
         public ActionResult<Result<bool>> Post(int userId, int projectId, [FromBody] StatusUpdateOptions update)
         {
             var result = dashboardService_.StatusUpdate(userId, projectId, update.Text);
@@ -211,7 +197,7 @@ namespace CrowDoAPI.Controllers
 
         // POST api/Users/...
 
-        [HttpPost("/IUserService/Users/Register")]
+        [HttpPost("/Users/Register")]
         public ActionResult<Result<User>> CreateUser([FromBody] UsersServiceOptionsRegister edit)
         {
             var result = userService_.Create(edit.Email, edit.Name, edit.Address, edit.BirthDate);
@@ -222,14 +208,14 @@ namespace CrowDoAPI.Controllers
 
         // PUT api/Users/...
 
-        [HttpPut("/IUserService/Users/UserEmail:{userEmail}/EditAccount")]
+        [HttpPut("/Users/UserEmail:{userEmail}/EditAccount")]
         public ActionResult<Result<bool>> EditUser(string userEmail, [FromBody] UserServiceOptionsEditAccount edit)
         {
             var result = userService_.Edit(userEmail, edit.Name, edit.Address, edit.BirthDate);
             return result;
         }
 
-        [HttpPut("/IDashBoardService/Users/UserId:{userId}/Project/ProjectId:{projectId}/EditProject")]
+        [HttpPut("/DashBoard/Users/UserId:{userId}/Project/ProjectId:{projectId}/EditProject")]
         public ActionResult<Result<bool>> EditProject(int userId, int projectId, [FromBody] ProjectOptionsEdit project)
         {
             var result = dashboardService_.EditProject(userId, projectId, project.ProjectName,
@@ -242,21 +228,21 @@ namespace CrowDoAPI.Controllers
 
         // DELETE api/Users/...
 
-        [HttpDelete("/IUserService/Users/UserEmail:{userEmail}/DeleteAccount")]
+        [HttpDelete("/Users/UserEmail:{userEmail}/DeleteAccount")]
         public ActionResult<Result<bool>> DeleteUser(string userEmail)
         {
             var result = userService_.Delete(userEmail);
             return result;
         }
 
-        [HttpDelete("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/RewardPackages/RewardPackageId:{rewardPackageId}/Delete")]
+        [HttpDelete("/DashBoard/Users/UsersId:{userId}/Project/ProjectId:{projectId}/RewardPackages/RewardPackageId:{rewardPackageId}/Delete")]
         public ActionResult<Result<bool>> DeleteUser(int userId, int projectId, int rewardPackageId)
         {
             var result = dashboardService_.DeleteRewardPackage(userId, projectId, rewardPackageId);
             return result;
         }
 
-        [HttpDelete("/IDashBoardService/Users/UsersId:{userId}/Project/ProjectId:{projectId}/DeleteProject")]
+        [HttpDelete("/DashBoard/Users/UsersId:{userId}/Project/ProjectId:{projectId}/DeleteProject")]
         public ActionResult<Result<bool>> DeleteProject(int userId, int projectId)
         {
             var result = dashboardService_.DeleteProject(userId, projectId);
